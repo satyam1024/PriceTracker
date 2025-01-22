@@ -14,7 +14,7 @@ const Landing=()=> {
   
   const fetchAllProduct = async () => {
     try {
-      const response = await axios.get(`${process.env.BACKEND_URL}/products`);
+      const response = await axios.get(`https://price-tracker-backend-ifbswwxfz-satyams-projects-9c7c8da9.vercel.app/products`);
       setAllProducts(response.data);
       console.log(response.data);
     } catch (error) {
