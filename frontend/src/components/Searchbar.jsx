@@ -30,7 +30,7 @@ const Searchbar = () => {
 
   const scrapeProduct = async (productUrl) => {
     try {
-      const response = await axios.post("http://localhost:5000/scrape", {
+      const response = await axios.post(`${process.env.BACKEND_URL}/scrape`, {
         productUrl,
       });
       navigate(`/product/${response.data}`);

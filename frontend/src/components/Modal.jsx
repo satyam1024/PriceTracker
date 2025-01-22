@@ -8,7 +8,7 @@ const Modal = ({ productId }) => {
   const addUserEmail = async () => {
     try {
       const response = await axios.post(
-        `http://localhost:5000/add-user-email`,
+        `${process.env.BACKEND_URL}/add-user-email`,
         {
           productId: productId,
           userEmail: email,

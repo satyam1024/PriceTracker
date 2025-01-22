@@ -14,7 +14,7 @@ const Landing=()=> {
   const fetchProduct = async (productId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/products/678f384bce1fb061d21b4a05`
+        `${process.env.BACKEND_URL}`
       );
       setProduct(response.data);
       console.log(response.data);
@@ -24,7 +24,7 @@ const Landing=()=> {
   };
   const fetchAllProduct = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/products`);
+      const response = await axios.get(`${process.env.BACKEND_URL}/products`);
       setAllProducts(response.data);
       console.log(response.data);
     } catch (error) {

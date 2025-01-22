@@ -15,7 +15,7 @@ const ProductDetails = () => {
   const fetchProduct = async (productId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/products/${productId}`
+        `${process.env.BACKEND_URL}/products/${productId}`
       );
       return response.data;
     } catch (error) {
@@ -26,7 +26,7 @@ const ProductDetails = () => {
   const fetchSimilarProducts = async (productId) => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/similar-products/${productId}`
+        `${process.env.BACKEND_URL}/similar-products/${productId}`
       );
       return response.data;
     } catch (error) {
