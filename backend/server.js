@@ -172,3 +172,5 @@ cron.schedule("0 0 * * *", async () => {
     console.error(`Failed to complete cron job: ${error.message}`);
   }
 });
+
+module.exports = app
