@@ -11,17 +11,7 @@ const Landing=()=> {
   const [allProducts, setAllProducts] = useState([]);
 
   const [product, setProduct] = useState("");
-  const fetchProduct = async (productId) => {
-    try {
-      const response = await axios.get(
-        `${process.env.BACKEND_URL}`
-      );
-      setProduct(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.log("Failed to fetch product", error);
-    }
-  };
+  
   const fetchAllProduct = async () => {
     try {
       const response = await axios.get(`${process.env.BACKEND_URL}/products`);
