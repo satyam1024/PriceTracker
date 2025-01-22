@@ -3,6 +3,11 @@ import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { scrapeAndStoreProduct, getProductById, getAllProducts, getSimilarProducts, addUserEmailToProduct } from '../backend/controller/productController.js';
+import cron from 'node-cron';
+import Product from './models/productModel.js';
+import { scrapeAmazonProduct } from './scrapper/index.js';
+import { getAveragePrice, getHighestPrice, getLowestPrice, getEmailNotifType } from './utils.js';
+import { generateEmailBody, sendEmail } from './mail/index.js';
 
 dotenv.config();
 
@@ -100,7 +105,70 @@ app.post('/add-user-email', async (req, res) => {
   }
 });
 
-// Start the server
+
+
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+});
+
+
+
+
+
+
+
+
+
+cron.schedule("0 0 * * *", async () => { 
+  console.log("Running cron job to scrape products and update database...");
+  
+  try {
+   
+    const products = await Product.find({});
+    if (!products) throw new Error("No product fetched");
+
+    const updatedProducts = await Promise.all(
+      products.map(async (currentProduct) => {
+        const scrapedProduct = await scrapeAmazonProduct(currentProduct.url);
+        if (!scrapedProduct) return null;
+
+        const updatedPriceHistory = [
+          ...currentProduct.priceHistory,
+          { price: scrapedProduct.currentPrice },
+        ];
+
+        const product = {
+          ...scrapedProduct,
+          priceHistory: updatedPriceHistory,
+          lowestPrice: getLowestPrice(updatedPriceHistory),
+          highestPrice: getHighestPrice(updatedPriceHistory),
+          averagePrice: getAveragePrice(updatedPriceHistory),
+        };
+
+        // Update product in the database
+        const updatedProduct = await Product.findOneAndUpdate(
+          { url: product.url },
+          product,
+          { new: true } 
+        );
+
+        const emailNotifType = getEmailNotifType(scrapedProduct, currentProduct);
+        if (emailNotifType && updatedProduct.users.length > 0) {
+          const productInfo = {
+            title: updatedProduct.title,
+            url: updatedProduct.url,
+          };
+          const emailContent = await generateEmailBody(productInfo, emailNotifType);
+          const userEmails = updatedProduct.users.map((user) => user.email);
+          await sendEmail(emailContent, userEmails);
+        }
+
+        return updatedProduct;
+      })
+    );
+
+    console.log("Cron job completed successfully.");
+  } catch (error) {
+    console.error(`Failed to complete cron job: ${error.message}`);
+  }
 });
