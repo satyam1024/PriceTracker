@@ -38,10 +38,11 @@ app.use(express.urlencoded({ extended: false }));
 
 const port = process.env.PORT || 5000;
 
-// Connect to DB
-connectToDB();
 
-// Routes
+app.get('/home', (req, res) => {
+  res.status(200).json('Welcome, your app is working well');
+})
+
 app.post('/scrape', async (req, res) => {
   const { productUrl } = req.body;
   try {
