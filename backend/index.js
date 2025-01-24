@@ -30,8 +30,11 @@ connectToDB();
 // Initialize Express
 const app = express();
 
-// Middleware
-app.use(cors()); // Enable CORS for all origins
+app.use(cors({
+    origin: 'https://price-tracker-frontend-nine.vercel.app', 
+    methods: ['GET', 'POST'], // Allowed methods
+    allowedHeaders: ['Content-Type', 'Authorization'],
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
