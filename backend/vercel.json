@@ -6,7 +6,7 @@
       "use": "@vercel/node"
     },
     {
-      "src": "scrapcron.js",
+      "src": "scrapecron.js",
       "use": "@vercel/node"
     }
   ],
@@ -16,8 +16,8 @@
       "dest": "index.js"
     },
     {
-      "src": "/scrapcron",
-      "dest": "scrapcron.js"
+      "src": "/(.*)",
+      "dest": "scrapecron.js"
     }
   ]
 }
