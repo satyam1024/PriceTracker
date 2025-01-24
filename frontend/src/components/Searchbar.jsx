@@ -30,7 +30,7 @@ const Searchbar = () => {
 
   const scrapeProduct = async (productUrl) => {
     try {
-      const response = await axios.post(`${process.env.BACKEND_URL}/scrape`, {
+      const response = await axios.post(`https://price-tracker-backend-inky.vercel.app/scrape`, {
         productUrl,
       });
       navigate(`/product/${response.data}`);
