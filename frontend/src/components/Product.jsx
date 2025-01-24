@@ -15,7 +15,7 @@ const ProductDetails = () => {
   const fetchProduct = async (productId) => {
     try {
       const response = await axios.get(
-        `${process.env.BACKEND_URL}/products/${productId}`
+        `https://price-tracker-backend-inky.vercel.app/products/${productId}`
       );
       return response.data;
     } catch (error) {
