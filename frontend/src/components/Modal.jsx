@@ -8,7 +8,7 @@ const Modal = ({ productId }) => {
   const addUserEmail = async () => {
     try {
       const response = await axios.post(
-        `${process.env.BACKEND_URL}/add-user-email`,
+        `https://price-tracker-backend-inky.vercel.app/add-user-email`,
         {
           productId: productId,
           userEmail: email,
