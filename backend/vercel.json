@@ -5,19 +5,18 @@
       "src": "index.js", 
       "use": "@vercel/node"
     },
-    {
-      "src": "scrapecron.js",
-      "use": "@vercel/node"
-    }
+   
   ],
   "routes": [
     {
       "src": "/(.*)",
       "dest": "index.js"
     },
-    {
-      "src": "/(.*)",
-      "dest": "scrapecron.js"
-    }
+    
   ]
+  "crons": [
+    {
+      "path": "/scrapecron.js",
+      "schedule": "0 0 * * *"
+    }
 }
